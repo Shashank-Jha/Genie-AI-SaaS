@@ -5,6 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Montserrat } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { FreeCounter } from "@/components/free-counter";
 import {
   LayoutDashboard,
   MessageSquare,
@@ -14,6 +15,7 @@ import {
   Code,
   Settings,
 } from "lucide-react";
+
 
 const montserrat = Montserrat({ weight: "600", subsets: ["latin"] });
 const routes = [
@@ -61,7 +63,11 @@ const routes = [
   },
 ];
 
-const Sidebar = () => {
+interface SidebarProps{
+  apiLimitCount:number;
+};
+
+const Sidebar = ({apiLimitCount=0}:SidebarProps) => {
   const pathname = usePathname();
   return (
     <div className="space-y-4 py-4 flex flex-col h-full bg-[#111827] text-[#f2f2f2]">
@@ -94,6 +100,7 @@ const Sidebar = () => {
           ))}
         </div>
       </div>
+      <FreeCounter apiLimitCount={apiLimitCount}/>
     </div>
   );
 };
