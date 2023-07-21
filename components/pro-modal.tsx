@@ -1,5 +1,6 @@
 "use client";
 
+import axios from "axios";
 import { useProModal } from "@/app/hooks/use-pro-modal";
 import {
   Dialog,
@@ -11,10 +12,19 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { MessageSquare, ImageIcon, VideoIcon, Music, Code, Check, Zap } from "lucide-react";
+import {
+  MessageSquare,
+  ImageIcon,
+  VideoIcon,
+  Music,
+  Code,
+  Check,
+  Zap,
+} from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 const tools = [
   {
@@ -51,6 +61,20 @@ const tools = [
 
 export const ProModal = () => {
   const proModal = useProModal();
+  const [loading, setLoading] = useState(true);
+
+  const onSubscribe = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get("api/stripe");
+      window.location.href = response.data.url;
+    } catch (error) {
+      console.log(error, "STRIPE_CLIENT_ERROR");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Dialog open={proModal.isOpen} onOpenChange={proModal.onClose}>
       <DialogContent>
@@ -70,16 +94,22 @@ export const ProModal = () => {
                   </div>
                   <div className="font-semibold text-sm">{tool.label}</div>
                 </div>
-                <Check className="text-primary w-5 h-5"/>
+                <Check className="text-primary w-5 h-5" />
               </Card>
             ))}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-            <Button size="lg" variant="premium" className="w-full">
-                Upgrade 
-                <Zap className="w-4 h-4 ml-2 fill-white"/>
-            </Button>
+          <Button
+            disabled={loading}
+            onClick={onSubscribe}
+            size="lg"
+            variant="premium"
+            className="w-full"
+          >
+            Upgrade
+            <Zap className="w-4 h-4 ml-2 fill-white" />
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

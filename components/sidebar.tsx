@@ -16,7 +16,6 @@ import {
   Settings,
 } from "lucide-react";
 
-
 const montserrat = Montserrat({ weight: "600", subsets: ["latin"] });
 const routes = [
   {
@@ -58,16 +57,17 @@ const routes = [
   {
     label: "Settings",
     icon: Settings,
-    href: "/setting",
+    href: "/settings",
     color: "text-slate-500",
   },
 ];
 
-interface SidebarProps{
-  apiLimitCount:number;
-};
+interface SidebarProps {
+  apiLimitCount: number;
+  isPro: boolean;
+}
 
-const Sidebar = ({apiLimitCount=0}:SidebarProps) => {
+const Sidebar = ({ apiLimitCount = 0, isPro = false }: SidebarProps) => {
   const pathname = usePathname();
   return (
     <div className="space-y-4 py-4 flex flex-col h-full bg-[#111827] text-[#f2f2f2]">
@@ -100,7 +100,7 @@ const Sidebar = ({apiLimitCount=0}:SidebarProps) => {
           ))}
         </div>
       </div>
-      <FreeCounter apiLimitCount={apiLimitCount}/>
+      <FreeCounter apiLimitCount={apiLimitCount} isPro={isPro} />
     </div>
   );
 };
